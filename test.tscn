@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://ccuskcayoh468"]
+
+[node name="Node2d" type="Node2D"]
+position = Vector2(419, 218)
+metadata/_edit_group_ = true
+
+[node name="RayCast2D" type="RayCast2D" parent="."]

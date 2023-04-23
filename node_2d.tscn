@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6gl6hpyxdjjm"]
+
+[ext_resource type="Script" path="res://node_2d.gd" id="1_h3pd1"]
+[ext_resource type="Texture2D" uid="uid://dvphxisqupqkx" path="res://enemyFloating_1.png" id="2_4d55e"]
+[ext_resource type="Script" path="res://FOV.gd" id="3_sca5q"]
+[ext_resource type="Texture2D" uid="uid://c2lj27ib33dvi" path="res://blockBrown_broken.png" id="4_h3o12"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1k5bg"]
+radius = 15.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dy55o"]
+size = Vector2(64, 65)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_h3pd1")
+
+[node name="Enemy" type="Area2D" parent="."]
+position = Vector2(960, 540)
+collision_layer = 0
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Enemy"]
+texture = ExtResource("2_4d55e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+visible = false
+shape = SubResource("CircleShape2D_1k5bg")
+
+[node name="FOV" type="Node2D" parent="Enemy"]
+show_behind_parent = true
+script = ExtResource("3_sca5q")
+radius = 500
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(1088, 720)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("4_h3o12")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+visible = false
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_dy55o")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(803, 597)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
+texture = ExtResource("4_h3o12")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+visible = false
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_dy55o")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(1094, 486)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3"]
+texture = ExtResource("4_h3o12")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+visible = false
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_dy55o")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+rotation = -1.5708
