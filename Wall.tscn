@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw2h7lb7nyhcy"]
+
+[ext_resource type="FontFile" uid="uid://qf2gk3lwd8ut" path="res://SmileySans-Oblique.otf" id="2_le113"]
+[ext_resource type="Texture2D" uid="uid://c2lj27ib33dvi" path="res://blockBrown_broken.png" id="2_uxhlp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dy55o"]
+size = Vector2(64, 65)
+
+[node name="Wall" type="StaticBody2D"]
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_uxhlp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_dy55o")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_le113")
+theme_override_font_sizes/font_size = 32
+text = "Wall"

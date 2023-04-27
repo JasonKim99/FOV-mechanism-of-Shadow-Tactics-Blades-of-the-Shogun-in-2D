@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://cskmhiofdfibi"]
+
+[ext_resource type="Texture2D" uid="uid://be1vsjndvqhew" path="res://medievalRTS_spritesheet@2.png" id="1_idoil"]
+[ext_resource type="FontFile" uid="uid://qf2gk3lwd8ut" path="res://SmileySans-Oblique.otf" id="2_411dq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp258"]
+size = Vector2(14, 27)
+
+[node name="Grass" type="StaticBody2D"]
+scale = Vector2(1.5, 1.5)
+collision_layer = 2
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_idoil")
+region_enabled = true
+region_rect = Rect2(864, 256, 40, 40)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 10)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_cp258")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_411dq")
+theme_override_font_sizes/font_size = 20
+text = "Grass"

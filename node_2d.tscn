@@ -1,15 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://b6gl6hpyxdjjm"]
+[gd_scene load_steps=10 format=3 uid="uid://g2p4fdhextj0"]
 
 [ext_resource type="Script" path="res://node_2d.gd" id="1_h3pd1"]
 [ext_resource type="Texture2D" uid="uid://dvphxisqupqkx" path="res://enemyFloating_1.png" id="2_4d55e"]
+[ext_resource type="Shader" path="res://stripe.gdshader" id="3_0pb6f"]
 [ext_resource type="Script" path="res://FOV.gd" id="3_sca5q"]
-[ext_resource type="Texture2D" uid="uid://c2lj27ib33dvi" path="res://blockBrown_broken.png" id="4_h3o12"]
+[ext_resource type="PackedScene" uid="uid://cw2h7lb7nyhcy" path="res://Wall.tscn" id="4_sr5yn"]
+[ext_resource type="PackedScene" uid="uid://cskmhiofdfibi" path="res://Grass.tscn" id="6_ss3o4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1k5bg"]
 radius = 15.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dy55o"]
-size = Vector2(64, 65)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r3ws8"]
+shader = ExtResource("3_0pb6f")
+shader_parameter/stripe_width = 1.0
+shader_parameter/stripe_color = Color(0, 0, 0, 0)
+shader_parameter/background_color = Color(0.180392, 0.545098, 0.341176, 1)
+shader_parameter/radius_scale = 0.2
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4kbtd"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_h3pd1")
@@ -29,44 +37,31 @@ shape = SubResource("CircleShape2D_1k5bg")
 
 [node name="FOV" type="Node2D" parent="Enemy"]
 show_behind_parent = true
+material = SubResource("ShaderMaterial_r3ws8")
 script = ExtResource("3_sca5q")
-radius = 500
+fov_texture = SubResource("PlaceholderTexture2D_4kbtd")
+edge_resolution = 30
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(1088, 720)
-metadata/_edit_group_ = true
+[node name="Camera2D" type="Camera2D" parent="Enemy"]
+zoom = Vector2(1.6, 1.6)
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
-texture = ExtResource("4_h3o12")
+[node name="Grass3" parent="." instance=ExtResource("6_ss3o4")]
+position = Vector2(818, 534)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-visible = false
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_dy55o")
+[node name="Wall" parent="." instance=ExtResource("4_sr5yn")]
+position = Vector2(702, 463)
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(803, 597)
-metadata/_edit_group_ = true
+[node name="Wall2" parent="." instance=ExtResource("4_sr5yn")]
+position = Vector2(679, 590)
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D2"]
-texture = ExtResource("4_h3o12")
+[node name="Wall3" parent="." instance=ExtResource("4_sr5yn")]
+position = Vector2(1023, 646)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-visible = false
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_dy55o")
+[node name="Grass" parent="." instance=ExtResource("6_ss3o4")]
+position = Vector2(1071, 451)
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="."]
-position = Vector2(1094, 486)
-metadata/_edit_group_ = true
+[node name="Grass2" parent="." instance=ExtResource("6_ss3o4")]
+position = Vector2(1087, 583)
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D3"]
-texture = ExtResource("4_h3o12")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
-visible = false
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_dy55o")
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
-rotation = -1.5708
+[node name="Grass4" parent="." instance=ExtResource("6_ss3o4")]
+position = Vector2(1084, 756)

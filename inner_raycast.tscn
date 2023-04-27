@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bldiks8d8k1b3"]
+
+[ext_resource type="Script" path="res://view_raycast.gd" id="1_lwf27"]
+
+[node name="Raycast" type="RayCast2D"]
+collision_mask = 3
+collide_with_areas = true
+script = ExtResource("1_lwf27")
