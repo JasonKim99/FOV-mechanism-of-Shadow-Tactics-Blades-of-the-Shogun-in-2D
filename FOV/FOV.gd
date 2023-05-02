@@ -1,13 +1,22 @@
 #@tool
-extends Node2D
+extends CanvasGroup
+#extends Node2D
 
-@export var fov_texture : Texture2D
+@onready var inner_view: Node2D = $InnerView
+@onready var outer_view: Node2D = $OuterView
+
 @export_range(10.0,10000.0,1.0) var inner_radius := 200
 @export_range(10.0,10000.0,1.0) var outer_radius := 300
 @export_range(1,90,1) var angle_range := 20
-@export_range(5,1001,2) var raycast_resolution := 5
-@export_range(1,100,1) var edge_resolution := 20
-@export var view_color := Color.SEA_GREEN
+@export_range(5,1001,2) var raycast_resolution := 7
+@export_range(1,100,1) var edge_resolution := 10
+@export var view_color := Color.SEA_GREEN:
+	set(new_color):
+		view_color = new_color
+		if inner_view and outer_view:
+			inner_view.view_color = view_color
+			outer_view.view_color = view_color
+
 
 var heading := Vector2.RIGHT
 var left_edge := Vector2.RIGHT
@@ -48,35 +57,10 @@ func _physics_process(delta: float) -> void:
 func _draw() -> void:
 	Geometry2D.convex_hull(outer_points)
 	Geometry2D.convex_hull(inner_points)
-	for i in outer_points.size():
-		var triangle_points = []
-		if i < outer_points.size() - 1:
-			var first_point := outer_points[0]
-			var second_point := outer_points[i]
-			var third_point := outer_points[i + 1]
-			triangle_points = [first_point,second_point,third_point]
-
-		else:
-			var first_point := outer_points[0]
-			var second_point := outer_points[i]
-			triangle_points = [first_point,second_point,first_point]
-		draw_colored_polygon(triangle_points,view_color,triangle_points,fov_texture)
-
-	for i in inner_points.size():
-		var triangle_points = []
-		if i < inner_points.size() - 1:
-			var first_point := inner_points[0]
-			var second_point := inner_points[i]
-			var third_point := inner_points[i + 1]
-			triangle_points = [first_point,second_point,third_point]
-		else:
-			var first_point := inner_points[0]
-			var second_point := inner_points[i]
-			triangle_points = [first_point,second_point,first_point]
-		draw_colored_polygon(triangle_points,view_color)
-	
-		pass
-	pass
+	outer_view.update_points(outer_points)
+	inner_view.update_points(inner_points)
+	outer_view.queue_redraw()
+	inner_view.queue_redraw()
 
 func setup_angle() -> void:
 	heading = (get_local_mouse_position() - position).normalized()

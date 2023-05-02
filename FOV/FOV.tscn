@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=3 uid="uid://vcb08011oihu"]
+
+[ext_resource type="Shader" path="res://FOV/stripe.gdshader" id="1_uk00s"]
+[ext_resource type="Script" path="res://FOV/FOV.gd" id="2_7mpv8"]
+[ext_resource type="Script" path="res://FOV/InnerView.gd" id="3_y1aip"]
+[ext_resource type="Script" path="res://FOV/OuterView.gd" id="4_qw2hx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pwbtj"]
+shader = ExtResource("1_uk00s")
+shader_parameter/stripe_width = 1.0
+shader_parameter/stripe_color = Color(0.180392, 0.545098, 0.341176, 1)
+shader_parameter/background_color = Color(1, 1, 1, 0)
+shader_parameter/radius_scale = 0.155
+shader_parameter/smoothness = 0.2
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bhrdx"]
+
+[node name="FOV" type="CanvasGroup"]
+show_behind_parent = true
+script = ExtResource("2_7mpv8")
+edge_resolution = 30
+
+[node name="OuterView" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_pwbtj")
+script = ExtResource("4_qw2hx")
+view_texture = SubResource("PlaceholderTexture2D_bhrdx")
+
+[node name="InnerView" type="Node2D" parent="."]
+script = ExtResource("3_y1aip")
