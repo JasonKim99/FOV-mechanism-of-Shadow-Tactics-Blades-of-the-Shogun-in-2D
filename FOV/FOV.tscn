@@ -1,9 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://vcb08011oihu"]
+[gd_scene load_steps=10 format=3 uid="uid://vcb08011oihu"]
 
+[ext_resource type="Shader" path="res://FOV/detect.gdshader" id="1_pyxig"]
 [ext_resource type="Shader" path="res://FOV/stripe.gdshader" id="1_uk00s"]
 [ext_resource type="Script" path="res://FOV/FOV.gd" id="2_7mpv8"]
 [ext_resource type="Script" path="res://FOV/InnerView.gd" id="3_y1aip"]
 [ext_resource type="Script" path="res://FOV/OuterView.gd" id="4_qw2hx"]
+[ext_resource type="Script" path="res://FOV/InterestView.gd" id="5_icv4t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pm8o4"]
+shader = ExtResource("1_pyxig")
+shader_parameter/start_position = Vector2(0.5, 0.5)
+shader_parameter/progress = 0.0
+shader_parameter/default_color = Color(0.180392, 0.545098, 0.341176, 0.5)
+shader_parameter/detect_sake_color = Color(0.627451, 0.12549, 0.941176, 0.5)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pwbtj"]
 shader = ExtResource("1_uk00s")
@@ -11,12 +20,14 @@ shader_parameter/stripe_width = 1.0
 shader_parameter/stripe_color = Color(0.180392, 0.545098, 0.341176, 1)
 shader_parameter/background_color = Color(1, 1, 1, 0)
 shader_parameter/radius_scale = 0.155
-shader_parameter/smoothness = 0.2
+shader_parameter/smoothness = 0.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bhrdx"]
 
 [node name="FOV" type="CanvasGroup"]
+self_modulate = Color(1, 1, 1, 0.588235)
 show_behind_parent = true
+material = SubResource("ShaderMaterial_pm8o4")
 script = ExtResource("2_7mpv8")
 edge_resolution = 30
 
@@ -27,3 +38,9 @@ view_texture = SubResource("PlaceholderTexture2D_bhrdx")
 
 [node name="InnerView" type="Node2D" parent="."]
 script = ExtResource("3_y1aip")
+
+[node name="InterestView" type="Node2D" parent="."]
+script = ExtResource("5_icv4t")
+
+[node name="Marker" type="Marker2D" parent="."]
+position = Vector2(1, 0)

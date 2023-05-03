@@ -3,6 +3,6 @@
 [ext_resource type="Script" path="res://view_raycast.gd" id="1_lwf27"]
 
 [node name="Raycast" type="RayCast2D"]
-collision_mask = 3
+collision_mask = 11
 collide_with_areas = true
 script = ExtResource("1_lwf27")

@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://50vm4iw5oyv5"]
+
+[ext_resource type="Texture2D" uid="uid://cgepufo7xsu8c" path="res://Assets/tilemap_packed.png" id="1_iba34"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0pg08"]
+radius = 4.0
+height = 10.0
+
+[node name="Sake" type="Area2D"]
+collision_layer = 8
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_iba34")
+region_enabled = true
+region_rect = Rect2(112, 144, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_0pg08")

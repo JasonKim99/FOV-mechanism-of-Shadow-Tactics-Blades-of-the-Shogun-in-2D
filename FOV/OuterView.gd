@@ -1,7 +1,10 @@
 extends Node2D
 
 @export var view_texture : Texture2D
-@export var view_color := Color.SEA_GREEN
+@export var view_color := Color.SEA_GREEN:
+	set(new_color):
+		view_color = new_color
+		material.set_shader_parameter("stripe_color",view_color)
 
 var outer_points : PackedVector2Array = []
 

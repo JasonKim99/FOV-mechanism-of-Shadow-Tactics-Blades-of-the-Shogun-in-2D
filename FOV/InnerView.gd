@@ -1,7 +1,6 @@
 extends Node2D
 
 @export var view_color := Color.SEA_GREEN
-
 var inner_points : PackedVector2Array = []
 
 
