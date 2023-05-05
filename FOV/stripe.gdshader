@@ -9,7 +9,7 @@ uniform float smoothness : hint_range(0.0, 1.0) = 0.1; // 添加平滑参数
 
 void fragment() {
 	vec2 uv = UV;
-	vec2 pixel_size = vec2(1.0) / vec2(texture(TEXTURE, vec2(0.5)).xy);
+//	vec2 pixel_size = vec2(1.0) / vec2(texture(TEXTURE, vec2(0.5)).xy);
 	float distance_from_center = length(uv);
 
 	float stripe_pattern = mod(distance_from_center * radius_scale, stripe_width * 2.0);

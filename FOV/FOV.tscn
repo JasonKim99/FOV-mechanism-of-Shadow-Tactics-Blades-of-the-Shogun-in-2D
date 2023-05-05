@@ -9,17 +9,16 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pm8o4"]
 shader = ExtResource("1_pyxig")
-shader_parameter/start_position = Vector2(0.5, 0.5)
-shader_parameter/progress = 0.0
-shader_parameter/default_color = Color(0.180392, 0.545098, 0.341176, 0.5)
-shader_parameter/detect_sake_color = Color(0.627451, 0.12549, 0.941176, 0.5)
+shader_parameter/fov_color = Color(0.627451, 0.12549, 0.941176, 0.588235)
+shader_parameter/fov_uv_pos = null
+shader_parameter/radius = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pwbtj"]
 shader = ExtResource("1_uk00s")
-shader_parameter/stripe_width = 1.0
+shader_parameter/stripe_width = 0.542
 shader_parameter/stripe_color = Color(0.180392, 0.545098, 0.341176, 1)
 shader_parameter/background_color = Color(1, 1, 1, 0)
-shader_parameter/radius_scale = 0.155
+shader_parameter/radius_scale = 0.117
 shader_parameter/smoothness = 0.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bhrdx"]

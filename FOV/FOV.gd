@@ -15,6 +15,7 @@ enum view_layer {
 @onready var interest_view: Node2D = $InterestView
 @onready var marker: Marker2D = $Marker
 
+#@export var place_hold_texture : Texture2D 
 @export_range(10.0,10000.0,1.0) var inner_radius := 200
 @export_range(10.0,10000.0,1.0) var outer_radius := 100
 @export_range(1,90,1) var angle_range := 20
@@ -44,9 +45,10 @@ var sake : Area2D
 var sake_distance : float =0.0
 var progress : float = 0.0
 var detect_time : float = 0.0
+var zoom := Vector2(1,1)
 
 func _ready() -> void:
-
+	
 	left_edge = heading.rotated(-deg_to_rad(angle_range)).normalized()
 	for i in raycast_resolution:
 		var raycast = outer_r.instantiate()
@@ -64,7 +66,9 @@ func _ready() -> void:
 	patrol()
 
 func _physics_process(delta: float) -> void:
-#	look_at(get_global_mouse_position())
+	zoom = get_viewport().get_camera_2d().zoom
+	var fov_screen_uv = global_to_uv(global_position)
+	material.set_shader_parameter("fov_uv_pos",fov_screen_uv)
 	setup_raycast()
 	detect_sake(delta)
 	queue_redraw()
@@ -191,9 +195,12 @@ func detect_sake(delta: float) -> void:
 		sake_distance = global_position.distance_to(sake.global_position)
 		detect_time += delta
 		progress = min(detect_time * sake_detect_speed / sake_distance,1)
+		#屏幕的距离和实际的距离要乘以放大倍数，假如放大倍数不一致则取最大值
+		material.set_shader_parameter("radius",detect_time * sake_detect_speed * max(zoom.x,zoom.y))
 		if is_equal_approx(progress,1):
 			interest_view.hide()
 			view_color = Color.PURPLE
+			material.set_shader_parameter("radius",0.0)
 	pass
 
 func calculate_interest_point(point: Vector2) -> Vector2:
@@ -202,3 +209,14 @@ func calculate_interest_point(point: Vector2) -> Vector2:
 	else:
 		return point
 	pass
+
+func global_to_uv(global: Vector2) -> Vector2:
+	var camera_zoom = get_viewport().get_camera_2d().zoom
+	## 定位视窗的global position
+	var screen_origin = get_viewport().get_camera_2d().get_screen_center_position() - Vector2(get_viewport().size / 2) / camera_zoom
+	## 计算在视窗坐标系下的坐标
+	var screen_pos = global - screen_origin
+	
+	## 换算成视窗uv
+	var screen_uv = screen_pos / (Vector2(get_viewport().size)/ camera_zoom)
+	return screen_uv
