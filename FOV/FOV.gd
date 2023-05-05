@@ -1,21 +1,18 @@
 #@tool
 extends CanvasGroup
-#extends Node2D
 
 
 enum view_layer {
 	OUT,
 	IN,
-	INTEREST
 }
 
 
 @onready var inner_view: Node2D = $InnerView
 @onready var outer_view: Node2D = $OuterView
-@onready var interest_view: Node2D = $InterestView
+
 @onready var marker: Marker2D = $Marker
 
-#@export var place_hold_texture : Texture2D 
 @export_range(10.0,10000.0,1.0) var inner_radius := 200
 @export_range(10.0,10000.0,1.0) var outer_radius := 100
 @export_range(1,90,1) var angle_range := 20
@@ -36,7 +33,6 @@ var outer_r := preload("res://view_raycast.tscn")
 var inner_r := preload("res://inner_raycast.tscn") 
 var outer_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
 var inner_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
-var interest_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
 var raycast_updated := false
 
 var tween : Tween
@@ -78,10 +74,13 @@ func _draw() -> void:
 	Geometry2D.convex_hull(inner_points)
 	outer_view.update_points(outer_points)
 	inner_view.update_points(inner_points)
-	interest_view.update_points(interest_points)
 	outer_view.queue_redraw()
 	inner_view.queue_redraw()
-	interest_view.queue_redraw()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("R"):
+		get_tree().reload_current_scene()
 
 func setup_raycast() -> void:
 	var angle_num = raycast_resolution - 1
@@ -89,8 +88,7 @@ func setup_raycast() -> void:
 	outer_points.append(position)
 	inner_points.clear()
 	inner_points.append(position)
-	interest_points.clear()
-	interest_points.append(position)
+
 	var old_outer_raycast : RayCast2D
 	var new_outer_raycast : RayCast2D
 	var old_inner_raycast : RayCast2D
@@ -108,9 +106,7 @@ func setup_raycast() -> void:
 				outer_points.append_array(outer_edge_points)
 			if old_inner_raycast.get_collider() != new_inner_raycast.get_collider():
 				var inner_edge_points = refine_edge(old_inner_raycast,new_inner_raycast,view_layer.IN)
-#				var interest_edge_points = refine_edge(old_inner_raycast,new_inner_raycast,view_layer.INTEREST)
 				inner_points.append_array(inner_edge_points)
-#				interest_points.append_array(interest_edge_points)
 		#虚视角外围的点坐标
 		var outer_point : Vector2 = new_outer_raycast.target_position
 		#实视角内围的点坐标
@@ -128,7 +124,6 @@ func setup_raycast() -> void:
 				var collision_point = to_local(new_inner_raycast.get_collision_point())
 				inner_point = collision_point
 		inner_points.append(inner_point)
-#		interest_points.append(calculate_interest_point(inner_point))
 		old_outer_raycast = new_outer_raycast
 		old_inner_raycast = new_inner_raycast
 
@@ -160,9 +155,6 @@ func refine_edge(mincast: RayCast2D,maxcast: RayCast2D, layer: view_layer) -> Pa
 				edge_point = collision_point
 		else:
 			edge_point = edge_point.normalized() * (inner_radius if layer != view_layer.OUT else (inner_radius + outer_radius))
-#		#内视角且是有sake
-#		if layer == view_layer.INTEREST and sake:
-#			edge_point = calculate_interest_point(edge_point)
 		edge_points.append(edge_point)
 	raycast.queue_free()
 	return edge_points
@@ -186,29 +178,20 @@ func detect_sake(delta: float) -> void:
 				sake = null
 #				detect_time = 0.0
 				view_color = Color.SEA_GREEN
-				interest_view.hide()
 	else:
 		if tween:
 			tween.kill()
 		look_at(sake.global_position)
-		interest_view.show()
 		sake_distance = global_position.distance_to(sake.global_position)
 		detect_time += delta
 		progress = min(detect_time * sake_detect_speed / sake_distance,1)
 		#屏幕的距离和实际的距离要乘以放大倍数，假如放大倍数不一致则取最大值
 		material.set_shader_parameter("radius",detect_time * sake_detect_speed * max(zoom.x,zoom.y))
 		if is_equal_approx(progress,1):
-			interest_view.hide()
 			view_color = Color.PURPLE
 			material.set_shader_parameter("radius",0.0)
 	pass
 
-func calculate_interest_point(point: Vector2) -> Vector2:
-	if point.length() > sake_distance * progress:
-		return point.normalized() * progress * sake_distance
-	else:
-		return point
-	pass
 
 func global_to_uv(global: Vector2) -> Vector2:
 	var camera_zoom = get_viewport().get_camera_2d().zoom

@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://vcb08011oihu"]
+[gd_scene load_steps=9 format=3 uid="uid://vcb08011oihu"]
 
 [ext_resource type="Shader" path="res://FOV/detect.gdshader" id="1_pyxig"]
 [ext_resource type="Shader" path="res://FOV/stripe.gdshader" id="1_uk00s"]
 [ext_resource type="Script" path="res://FOV/FOV.gd" id="2_7mpv8"]
 [ext_resource type="Script" path="res://FOV/InnerView.gd" id="3_y1aip"]
 [ext_resource type="Script" path="res://FOV/OuterView.gd" id="4_qw2hx"]
-[ext_resource type="Script" path="res://FOV/InterestView.gd" id="5_icv4t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pm8o4"]
 shader = ExtResource("1_pyxig")
@@ -37,9 +36,6 @@ view_texture = SubResource("PlaceholderTexture2D_bhrdx")
 
 [node name="InnerView" type="Node2D" parent="."]
 script = ExtResource("3_y1aip")
-
-[node name="InterestView" type="Node2D" parent="."]
-script = ExtResource("5_icv4t")
 
 [node name="Marker" type="Marker2D" parent="."]
 position = Vector2(1, 0)
