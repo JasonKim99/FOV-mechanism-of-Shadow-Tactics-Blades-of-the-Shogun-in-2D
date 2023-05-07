@@ -1,1 +1,0 @@
-extends RayCast2D

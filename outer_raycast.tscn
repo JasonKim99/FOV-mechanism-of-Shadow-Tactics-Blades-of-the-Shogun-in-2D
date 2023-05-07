@@ -1,5 +1,4 @@
-[gd_scene format=3 uid="uid://bldiks8d8k1b3"]
+[gd_scene format=3 uid="uid://uh7ymd04dsgv"]
 
 [node name="Raycast" type="RayCast2D"]
-collision_mask = 11
 collide_with_areas = true

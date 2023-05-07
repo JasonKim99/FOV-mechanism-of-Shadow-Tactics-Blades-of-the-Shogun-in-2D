@@ -44,3 +44,11 @@ scale = Vector2(0.3, 0.3)
 [node name="Grass" parent="." instance=ExtResource("6_7d6c4")]
 position = Vector2(455, 310)
 scale = Vector2(0.5, 0.5)
+
+[node name="Grass2" parent="." instance=ExtResource("6_7d6c4")]
+position = Vector2(544, 216)
+scale = Vector2(0.5, 0.5)
+
+[node name="Wall2" parent="." instance=ExtResource("5_a6271")]
+position = Vector2(603, 237)
+scale = Vector2(0.5, 0.5)

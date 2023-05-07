@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://uh7ymd04dsgv"]
-
-[ext_resource type="Script" path="res://view_raycast.gd" id="1_jw3n4"]
-
-[node name="Raycast" type="RayCast2D"]
-collide_with_areas = true
-script = ExtResource("1_jw3n4")

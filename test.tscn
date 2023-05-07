@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccuskcayoh468"]
+[gd_scene load_steps=2 format=3 uid="uid://phsa5kr2jpxu"]
 
-[ext_resource type="Script" path="res://test.gd" id="1_bm1q8"]
+[sub_resource type="GDScript" id="GDScript_8p1fx"]
+script/source = "extends Node2D
+
+func _ready() -> void:
+	prints(\"21231\")
+"
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_bm1q8")
+script = SubResource("GDScript_8p1fx")

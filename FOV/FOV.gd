@@ -3,8 +3,8 @@ extends CanvasGroup
 
 
 enum view_layer {
-	OUT,
-	IN,
+	OUT = 1,
+	IN = 2,
 }
 
 
@@ -16,7 +16,7 @@ enum view_layer {
 @export_range(10.0,10000.0,1.0) var inner_radius := 200
 @export_range(10.0,10000.0,1.0) var outer_radius := 100
 @export_range(1,90,1) var angle_range := 20
-@export_range(5,1001,2) var raycast_resolution := 7
+@export_range(5,1001,2) var raycast_resolution := 9
 @export_range(1,100,1) var edge_resolution := 10
 @export var view_color := Color.SEA_GREEN:
 	set(new_color):
@@ -29,7 +29,7 @@ const heading := Vector2.RIGHT
 var left_edge := Vector2.RIGHT
 var outer_raycast_pool : Array[RayCast2D]
 var inner_raycast_pool : Array[RayCast2D]
-var outer_r := preload("res://view_raycast.tscn")
+var outer_r := preload("res://outer_raycast.tscn")
 var inner_r := preload("res://inner_raycast.tscn") 
 var outer_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
 var inner_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
@@ -146,11 +146,11 @@ func refine_edge(mincast: RayCast2D,maxcast: RayCast2D, layer: view_layer) -> Pa
 		raycast.force_raycast_update()
 		var edge_point : Vector2 = raycast.target_position
 		if raycast.is_colliding() and layer == view_layer.OUT:
-			if raycast.get_collider().get_collision_layer_value(1):
+			if raycast.get_collider().get_collision_layer_value(view_layer.OUT):
 				var collision_point = to_local(raycast.get_collision_point())
 				edge_point = collision_point
 		elif raycast.is_colliding() and layer != view_layer.OUT:
-			if raycast.get_collider().get_collision_layer_value(2) or raycast.get_collider().get_collision_layer_value(1):
+			if raycast.get_collider().get_collision_layer_value(view_layer.IN) or raycast.get_collider().get_collision_layer_value(view_layer.OUT):
 				var collision_point = to_local(raycast.get_collision_point())
 				edge_point = collision_point
 		else:
