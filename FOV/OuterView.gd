@@ -24,5 +24,5 @@ func _draw() -> void:
 	pass
 
 
-func update_points(inner_points: PackedVector2Array) -> void:
-	outer_points = inner_points
+func update_points(points: PackedVector2Array) -> void:
+	outer_points = points

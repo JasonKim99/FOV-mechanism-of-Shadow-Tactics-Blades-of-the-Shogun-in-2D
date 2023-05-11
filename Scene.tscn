@@ -1,17 +1,16 @@
 [gd_scene load_steps=8 format=3 uid="uid://q35t8jl5ahan"]
 
-[ext_resource type="Script" path="res://node_2d.gd" id="1_5vb6d"]
 [ext_resource type="Texture2D" uid="uid://cgepufo7xsu8c" path="res://Assets/tilemap_packed.png" id="2_iap7j"]
 [ext_resource type="PackedScene" uid="uid://vcb08011oihu" path="res://FOV/FOV.tscn" id="3_45hkq"]
 [ext_resource type="PackedScene" uid="uid://50vm4iw5oyv5" path="res://Sake.tscn" id="4_8is71"]
 [ext_resource type="PackedScene" uid="uid://cw2h7lb7nyhcy" path="res://Wall.tscn" id="5_a6271"]
 [ext_resource type="PackedScene" uid="uid://cskmhiofdfibi" path="res://Grass.tscn" id="6_7d6c4"]
+[ext_resource type="Script" path="res://FPS.gd" id="7_dl7tp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1k5bg"]
 radius = 5.09902
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_5vb6d")
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
@@ -35,14 +34,14 @@ shape = SubResource("CircleShape2D_1k5bg")
 [node name="FOV" parent="Enemy" instance=ExtResource("3_45hkq")]
 
 [node name="Sake" parent="." instance=ExtResource("4_8is71")]
-position = Vector2(548, 405)
+position = Vector2(528, 354)
 
 [node name="Wall" parent="." instance=ExtResource("5_a6271")]
-position = Vector2(490, 378)
+position = Vector2(532, 301)
 scale = Vector2(0.3, 0.3)
 
 [node name="Grass" parent="." instance=ExtResource("6_7d6c4")]
-position = Vector2(455, 310)
+position = Vector2(478, 323)
 scale = Vector2(0.5, 0.5)
 
 [node name="Grass2" parent="." instance=ExtResource("6_7d6c4")]
@@ -52,3 +51,22 @@ scale = Vector2(0.5, 0.5)
 [node name="Wall2" parent="." instance=ExtResource("5_a6271")]
 position = Vector2(603, 237)
 scale = Vector2(0.5, 0.5)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FPS" type="Label" parent="CanvasLayer"]
+self_modulate = Color(1, 1, 1, 0.588235)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -23.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 64
+text = "FPS："
+script = ExtResource("7_dl7tp")

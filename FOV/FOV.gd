@@ -17,7 +17,7 @@ enum view_layer {
 @export_range(10.0,10000.0,1.0) var outer_radius := 100
 @export_range(1,90,1) var angle_range := 20
 @export_range(5,1001,2) var raycast_resolution := 9
-@export_range(1,100,1) var edge_resolution := 10
+@export_range(1,100,1) var edge_resolution := 20
 @export var view_color := Color.SEA_GREEN:
 	set(new_color):
 		view_color = new_color
@@ -29,8 +29,8 @@ const heading := Vector2.RIGHT
 var left_edge := Vector2.RIGHT
 var outer_raycast_pool : Array[RayCast2D]
 var inner_raycast_pool : Array[RayCast2D]
-var outer_r := preload("res://outer_raycast.tscn")
-var inner_r := preload("res://inner_raycast.tscn") 
+var outer_r := preload("res://FOV/outer_raycast.tscn")
+var inner_r := preload("res://FOV/inner_raycast.tscn") 
 var outer_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
 var inner_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
 var raycast_updated := false
@@ -44,7 +44,6 @@ var detect_time : float = 0.0
 var zoom := Vector2(1,1)
 
 func _ready() -> void:
-	
 	left_edge = heading.rotated(-deg_to_rad(angle_range)).normalized()
 	for i in raycast_resolution:
 		var raycast = outer_r.instantiate()
@@ -113,14 +112,14 @@ func setup_raycast() -> void:
 		var inner_point : Vector2 = new_inner_raycast.target_position
 		#判断外围碰撞
 		if new_outer_raycast.is_colliding():
-			if new_outer_raycast.get_collider().get_collision_layer_value(1):
+			if new_outer_raycast.get_collider().get_collision_layer_value(view_layer.OUT):
 				var collision_point = to_local(new_outer_raycast.get_collision_point())
 				outer_point = collision_point
 				pass
 		outer_points.append(outer_point)
 		#判断内维碰撞
 		if new_inner_raycast.is_colliding():
-			if new_inner_raycast.get_collider().get_collision_layer_value(2) or new_inner_raycast.get_collider().get_collision_layer_value(1):
+			if new_inner_raycast.get_collider().get_collision_layer_value(view_layer.IN) or new_inner_raycast.get_collider().get_collision_layer_value(view_layer.OUT):
 				var collision_point = to_local(new_inner_raycast.get_collision_point())
 				inner_point = collision_point
 		inner_points.append(inner_point)
@@ -174,10 +173,10 @@ func detect_sake(delta: float) -> void:
 			if ray.is_colliding() and ray.get_collider().get_collision_layer_value(4):
 				sake = ray.get_collider()
 				break
-			else:
-				sake = null
-#				detect_time = 0.0
-				view_color = Color.SEA_GREEN
+#			else:
+#				sake = null
+##				detect_time = 0.0
+#				view_color = Color.SEA_GREEN
 	else:
 		if tween:
 			tween.kill()

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckys4gijgboow"]
+
+[ext_resource type="PackedScene" uid="uid://cw2h7lb7nyhcy" path="res://Wall.tscn" id="1_a8bah"]
+[ext_resource type="Texture2D" uid="uid://c2lj27ib33dvi" path="res://blockBrown_broken.png" id="1_bixbh"]
+[ext_resource type="PackedScene" uid="uid://cskmhiofdfibi" path="res://Grass.tscn" id="2_u1dov"]
+[ext_resource type="Texture2D" uid="uid://dguq1hf1r730s" path="res://2d_lights_and_shadows_neutral_point_light.webp" id="3_jmpb4"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="BlockBrownBroken" type="Sprite2D" parent="."]
+position = Vector2(652.75, 358.25)
+scale = Vector2(13.8516, 7.80469)
+texture = ExtResource("1_bixbh")
+
+[node name="Wall" parent="." instance=ExtResource("1_a8bah")]
+position = Vector2(745, 201)
+
+[node name="Grass" parent="." instance=ExtResource("2_u1dov")]
+position = Vector2(447, 202)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(591, 301)
+scale = Vector2(1.60156, 1.35547)
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+texture = ExtResource("3_jmpb4")
