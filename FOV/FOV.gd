@@ -192,7 +192,7 @@ func global_to_uv(global: Vector2) -> Vector2:
 	var screen_origin = get_viewport().get_camera_2d().get_screen_center_position() - Vector2(get_viewport().size / 2) / camera_zoom
 	## 计算在视窗坐标系下的坐标
 	var screen_pos = global - screen_origin
-	print(get_viewport().size)
+
 	## 换算成视窗uv
 	var screen_uv = screen_pos / (Vector2(get_viewport().size)/ camera_zoom)
 	return screen_uv
