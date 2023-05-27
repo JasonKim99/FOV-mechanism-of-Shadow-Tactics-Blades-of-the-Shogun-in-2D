@@ -11,8 +11,6 @@ enum view_layer {
 @onready var inner_view: Node2D = $InnerView
 @onready var outer_view: Node2D = $OuterView
 
-@onready var marker: Marker2D = $Marker
-
 @export_range(10.0,10000.0,1.0) var inner_radius := 200
 @export_range(10.0,10000.0,1.0) var outer_radius := 100
 @export_range(1,90,1) var angle_range := 20
@@ -31,8 +29,8 @@ var outer_raycast_pool : Array[RayCast2D]
 var inner_raycast_pool : Array[RayCast2D]
 var outer_r := preload("res://FOV/outer_raycast.tscn")
 var inner_r := preload("res://FOV/inner_raycast.tscn") 
-var outer_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
-var inner_points : PackedVector2Array = [Vector2.UP,Vector2.RIGHT,Vector2.DOWN]
+var outer_points : PackedVector2Array = []
+var inner_points : PackedVector2Array = []
 var raycast_updated := false
 
 var tween : Tween
@@ -44,6 +42,7 @@ var detect_time : float = 0.0
 var zoom := Vector2(1,1)
 
 func _ready() -> void:
+	view_color = Color.SEA_GREEN
 	left_edge = heading.rotated(-deg_to_rad(angle_range)).normalized()
 	for i in raycast_resolution:
 		var raycast = outer_r.instantiate()
@@ -65,8 +64,8 @@ func _physics_process(delta: float) -> void:
 	var fov_screen_uv = global_to_uv(global_position)
 	material.set_shader_parameter("fov_uv_pos",fov_screen_uv)
 	setup_raycast()
-	detect_sake(delta)
 	queue_redraw()
+	detect_sake(delta)
 
 func _draw() -> void:
 	Geometry2D.convex_hull(outer_points)
@@ -75,7 +74,6 @@ func _draw() -> void:
 	inner_view.update_points(inner_points)
 	outer_view.queue_redraw()
 	inner_view.queue_redraw()
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("R"):
@@ -173,10 +171,6 @@ func detect_sake(delta: float) -> void:
 			if ray.is_colliding() and ray.get_collider().get_collision_layer_value(4):
 				sake = ray.get_collider()
 				break
-#			else:
-#				sake = null
-##				detect_time = 0.0
-#				view_color = Color.SEA_GREEN
 	else:
 		if tween:
 			tween.kill()
@@ -191,14 +185,14 @@ func detect_sake(delta: float) -> void:
 			material.set_shader_parameter("radius",0.0)
 	pass
 
-
 func global_to_uv(global: Vector2) -> Vector2:
+	## shader在  display/window/stretch/mode: disable mode 下才有效
 	var camera_zoom = get_viewport().get_camera_2d().zoom
 	## 定位视窗的global position
 	var screen_origin = get_viewport().get_camera_2d().get_screen_center_position() - Vector2(get_viewport().size / 2) / camera_zoom
 	## 计算在视窗坐标系下的坐标
 	var screen_pos = global - screen_origin
-	
+	print(get_viewport().size)
 	## 换算成视窗uv
 	var screen_uv = screen_pos / (Vector2(get_viewport().size)/ camera_zoom)
 	return screen_uv

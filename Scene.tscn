@@ -32,9 +32,13 @@ region_rect = Rect2(16, 144, 16, 16)
 shape = SubResource("CircleShape2D_1k5bg")
 
 [node name="FOV" parent="Enemy" instance=ExtResource("3_45hkq")]
+rotation = 0.222967
 
 [node name="Sake" parent="." instance=ExtResource("4_8is71")]
 position = Vector2(528, 354)
+
+[node name="Sake2" parent="." instance=ExtResource("4_8is71")]
+position = Vector2(702, 292)
 
 [node name="Wall" parent="." instance=ExtResource("5_a6271")]
 position = Vector2(532, 301)

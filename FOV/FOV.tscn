@@ -36,6 +36,3 @@ view_texture = SubResource("PlaceholderTexture2D_bhrdx")
 
 [node name="InnerView" type="Node2D" parent="."]
 script = ExtResource("3_y1aip")
-
-[node name="Marker" type="Marker2D" parent="."]
-position = Vector2(1, 0)
