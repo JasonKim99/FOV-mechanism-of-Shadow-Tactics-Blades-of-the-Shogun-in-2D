@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/always_on_top=true
+window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=0
 
 [input]

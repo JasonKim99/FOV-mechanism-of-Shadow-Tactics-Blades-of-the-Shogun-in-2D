@@ -39,7 +39,6 @@ var sake : Area2D
 var sake_distance : float =0.0
 var progress : float = 0.0
 var detect_time : float = 0.0
-var zoom := Vector2(1,1)
 
 func _ready() -> void:
 	view_color = Color.SEA_GREEN
@@ -60,7 +59,6 @@ func _ready() -> void:
 	patrol()
 
 func _physics_process(delta: float) -> void:
-	zoom = get_viewport().get_camera_2d().zoom
 	var fov_screen_uv = global_to_uv(global_position)
 	material.set_shader_parameter("fov_uv_pos",fov_screen_uv)
 	setup_raycast()
@@ -178,21 +176,75 @@ func detect_sake(delta: float) -> void:
 		sake_distance = global_position.distance_to(sake.global_position)
 		detect_time += delta
 		progress = min(detect_time * sake_detect_speed / sake_distance,1)
-		#屏幕的距离和实际的距离要乘以放大倍数，假如放大倍数不一致则取最大值
-		material.set_shader_parameter("radius",detect_time * sake_detect_speed * max(zoom.x,zoom.y))
+		match ProjectSettings.get_setting("display/window/stretch/mode"):
+			"disabled","viewport":
+				#屏幕的距离和实际的距离要乘以camera放大倍数,
+				material.set_shader_parameter("radius",detect_time * sake_detect_speed * get_camera_zoom())
+			"canvas_items":
+				#这个模式下还要乘以screen的zoom
+				material.set_shader_parameter("radius",detect_time * sake_detect_speed * get_zoom())
+				pass
 		if is_equal_approx(progress,1):
 			view_color = Color.PURPLE
 			material.set_shader_parameter("radius",0.0)
-	pass
+	pass 
 
 func global_to_uv(global: Vector2) -> Vector2:
-	## shader在  display/window/stretch/mode: disable mode 下才有效
-	var camera_zoom = get_viewport().get_camera_2d().zoom
+	## shader在  display/window/stretch/mode: disable 下才有效
+	## only works in disable
+	var screen_uv = Vector2.ZERO
+	## 默认窗口宽高
+	var window_width = ProjectSettings.get_setting("display/window/size/viewport_width")
+	var window_height = ProjectSettings.get_setting("display/window/size/viewport_height")
+	## 实际的视窗大小
+	var viewport_width = get_viewport().size.x
+	var viewport_height = get_viewport().size.y
+	## 计算实际渲染的screen大小
+	var screen_size_x = viewport_width
+	var screen_size_y = viewport_height
+	var screen_size = Vector2(screen_size_x,screen_size_y)
+	match ProjectSettings.get_setting("display/window/stretch/mode"):
+		"disabled":
+			pass
+		"canvas_items","viewport":
+			if (window_height * viewport_width/ window_width)  > viewport_height:
+				screen_size_x = viewport_height * window_width / window_height 
+			else:
+				screen_size_y = viewport_width * window_height / window_width
+			screen_size = Vector2(screen_size_x,screen_size_y)
 	## 定位视窗的global position
-	var screen_origin = get_viewport().get_camera_2d().get_screen_center_position() - Vector2(get_viewport().size / 2) / camera_zoom
-	## 计算在视窗坐标系下的坐标
+	var screen_origin = get_viewport().get_camera_2d().get_screen_center_position() - Vector2(screen_size / 2) / get_zoom()
+	## 计算在视窗坐标系下的坐标 
 	var screen_pos = global - screen_origin
-
 	## 换算成视窗uv
-	var screen_uv = screen_pos / (Vector2(get_viewport().size)/ camera_zoom)
+	screen_uv = screen_pos / (screen_size/ get_zoom())
 	return screen_uv
+
+func get_zoom() -> float:
+	var zoom := 1.0
+	## 默认窗口宽高
+	var window_width = ProjectSettings.get_setting("display/window/size/viewport_width")
+	var window_height = ProjectSettings.get_setting("display/window/size/viewport_height")
+	## 实际的视窗大小
+	var viewport_width = get_viewport().size.x
+	var viewport_height = get_viewport().size.y
+	## 计算实际渲染的screen大小
+	var screen_size_x = viewport_width
+	var screen_size_y = viewport_height
+	var screen_size = Vector2(screen_size_x,screen_size_y)
+	if (window_height * viewport_width/ window_width)  > viewport_height:
+		screen_size_x = viewport_height * window_width / window_height 
+	else:
+		screen_size_y = viewport_width * window_height / window_width
+	screen_size = Vector2(screen_size_x,screen_size_y)
+	var screen_zoom : float = float(screen_size_x) / float(window_width)
+	match ProjectSettings.get_setting("display/window/stretch/mode"):
+		"disabled":
+			screen_zoom = 1
+		_:
+			pass
+	zoom = get_camera_zoom() * screen_zoom
+	return zoom
+
+func get_camera_zoom() -> float:
+	return get_viewport().get_camera_2d().zoom.x
