@@ -189,8 +189,6 @@ func detect_sake(delta: float) -> void:
 	pass 
 
 func global_to_uv(global: Vector2) -> Vector2:
-	## shader在  display/window/stretch/mode: disable 下才有效
-	## only works in disable
 	var screen_uv = Vector2.ZERO
 	## 默认窗口宽高
 	var window_width = ProjectSettings.get_setting("display/window/size/viewport_width")
