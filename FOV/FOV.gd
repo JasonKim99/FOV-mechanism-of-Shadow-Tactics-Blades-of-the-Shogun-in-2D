@@ -1,4 +1,4 @@
-#@tool
+@tool
 extends CanvasGroup
 
 
@@ -31,7 +31,6 @@ var outer_r := preload("res://FOV/outer_raycast.tscn")
 var inner_r := preload("res://FOV/inner_raycast.tscn") 
 var outer_points : PackedVector2Array = []
 var inner_points : PackedVector2Array = []
-var raycast_updated := false
 
 var tween : Tween
 var sake_detect_speed := 100
@@ -56,14 +55,14 @@ func _ready() -> void:
 		add_child(raycast)
 		inner_raycast_pool.append(raycast)
 	set_physics_process(true)
-	patrol()
+#	patrol()
 
 func _physics_process(delta: float) -> void:
 	var fov_screen_uv = global_to_uv(global_position)
 	material.set_shader_parameter("fov_uv_pos",fov_screen_uv)
 	setup_raycast()
 	queue_redraw()
-	detect_sake(delta)
+#	detect_sake(delta)
 
 func _draw() -> void:
 	Geometry2D.convex_hull(outer_points)
