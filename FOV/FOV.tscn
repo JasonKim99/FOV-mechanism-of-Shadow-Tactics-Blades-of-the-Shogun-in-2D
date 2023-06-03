@@ -9,7 +9,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pm8o4"]
 shader = ExtResource("1_pyxig")
 shader_parameter/fov_color = Color(0.627451, 0.12549, 0.941176, 0.588235)
-shader_parameter/fov_uv_pos = null
+shader_parameter/fov_uv_pos = Vector2(0, 0)
 shader_parameter/radius = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pwbtj"]

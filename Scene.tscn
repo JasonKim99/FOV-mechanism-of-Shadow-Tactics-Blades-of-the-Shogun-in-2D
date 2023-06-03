@@ -33,6 +33,7 @@ shape = SubResource("CircleShape2D_1k5bg")
 
 [node name="FOV" parent="Enemy" instance=ExtResource("3_45hkq")]
 rotation = 0.780567
+raycast_resolution = 51
 
 [node name="Sake" parent="." instance=ExtResource("4_8is71")]
 position = Vector2(467, 458)
@@ -41,19 +42,19 @@ position = Vector2(467, 458)
 position = Vector2(710, 314)
 
 [node name="Wall" parent="." instance=ExtResource("5_a6271")]
-position = Vector2(554, 281)
+position = Vector2(539, 299)
 scale = Vector2(0.3, 0.3)
 
 [node name="Grass" parent="." instance=ExtResource("6_7d6c4")]
-position = Vector2(404, 339)
+position = Vector2(438, 365)
 scale = Vector2(0.5, 0.5)
 
 [node name="Grass2" parent="." instance=ExtResource("6_7d6c4")]
-position = Vector2(592, 250)
+position = Vector2(513, 261)
 scale = Vector2(0.5, 0.5)
 
 [node name="Wall2" parent="." instance=ExtResource("5_a6271")]
-position = Vector2(619, 299)
+position = Vector2(597, 309)
 scale = Vector2(0.5, 0.5)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

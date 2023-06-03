@@ -20,9 +20,11 @@ func _draw() -> void:
 			var first_point := outer_points[0]
 			var second_point := outer_points[i]
 			triangle_points = [first_point,second_point,first_point]
-		draw_colored_polygon(triangle_points,view_color,triangle_points,view_texture)
+		if not triangle_points.is_empty():
+			draw_colored_polygon(triangle_points,view_color,triangle_points,view_texture)
 	pass
 
 
 func update_points(points: PackedVector2Array) -> void:
 	outer_points = points
+	queue_redraw()

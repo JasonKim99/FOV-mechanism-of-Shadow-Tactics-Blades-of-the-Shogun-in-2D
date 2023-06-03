@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends CanvasGroup
 
 
@@ -55,22 +55,20 @@ func _ready() -> void:
 		add_child(raycast)
 		inner_raycast_pool.append(raycast)
 	set_physics_process(true)
-#	patrol()
+	patrol()
 
 func _physics_process(delta: float) -> void:
 	var fov_screen_uv = global_to_uv(global_position)
 	material.set_shader_parameter("fov_uv_pos",fov_screen_uv)
 	setup_raycast()
 	queue_redraw()
-#	detect_sake(delta)
+	detect_sake(delta)
 
 func _draw() -> void:
 	Geometry2D.convex_hull(outer_points)
 	Geometry2D.convex_hull(inner_points)
 	outer_view.update_points(outer_points)
 	inner_view.update_points(inner_points)
-	outer_view.queue_redraw()
-	inner_view.queue_redraw()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("R"):
