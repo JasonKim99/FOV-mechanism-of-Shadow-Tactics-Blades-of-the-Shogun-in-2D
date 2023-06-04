@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://7fcllovqnv0i"]
+
+[ext_resource type="Shader" path="res://FOV/stripe.gdshader" id="1_btn0e"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vk8ln"]
+shader = ExtResource("1_btn0e")
+shader_parameter/stripe_width = 0.6
+shader_parameter/stripe_color = Color(0.180392, 0.545098, 0.341176, 1)
+shader_parameter/background_color = Color(1, 1, 1, 0)
+shader_parameter/radius_scale = 0.12
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_biv5g"]
+
+[node name="Sprite2D" type="Sprite2D"]
+material = SubResource("ShaderMaterial_vk8ln")
+texture = SubResource("PlaceholderTexture2D_biv5g")
